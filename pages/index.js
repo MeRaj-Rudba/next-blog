@@ -1,10 +1,11 @@
 import Head from "next/head";
 import Image from "next/image";
 import { Fragment } from "react";
-import FeaturedPosts from "../components/hom-page/featured-posts";
-import Hero from "../components/hom-page/hero";
+import FeaturedPosts from "../components/home-page/featured-posts";
+import Hero from "../components/home-page/hero";
+import { getFeaturedPosts } from "../lib/post-util";
 
-export default function Home() {
+export default function Home(props) {
   return (
     <Fragment>
       <Head>
@@ -14,7 +15,17 @@ export default function Home() {
       </Head>
 
       <Hero />
-      <FeaturedPosts />
+      <FeaturedPosts posts={props.posts} />
     </Fragment>
   );
+}
+
+export async function getStaticProps(context) {
+  const featuredPosts = getFeaturedPosts();
+  return {
+    props: {
+      posts: featuredPosts,
+    },
+    revalidate: 60,
+  };
 }
