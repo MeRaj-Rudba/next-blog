@@ -21,12 +21,13 @@ export default async function handler(req, res) {
       message,
     };
     let client;
+
+    const connectionString = `mongodb+srv://${process.env.mongodb_username}:${process.env.mongodb_password}@${process.env.mongodb_clustername}.wqai5.mongodb.net/${process.env.mongodb_database}?retryWrites=true&w=majority`;
+
     try {
-      client = await MongoClient.connect(
-        "mongodb+srv://lumiereAdmin:dariusme1@cluster0.wqai5.mongodb.net/my-blog-site?retryWrites=true&w=majority"
-      );
+      client = await MongoClient.connect(connectionString);
     } catch (error) {
-      res.status(500), json({ message: "Could not connect to Database." });
+      res.status(500).json({ message: "Could not connect to Database." });
       return;
     }
     const db = client.db();
